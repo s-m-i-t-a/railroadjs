@@ -2,43 +2,63 @@
   "name": "railroadjs",
   "version": "0.1.0",
   "description": "A functional library.",
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "files": [
     "lib/"
   ],
   "scripts": {
-    "prebuild": "npm run clean:lib",
-    "build": "tsc",
-    "clean": "npm cache clean && npm run rimraf -- node_modules doc typings coverage lib",
-    "clean:lib": "npm run rimraf -- lib",
-    "lint": "npm run tslint 'src/**/*.ts'",
-    "prepublish": "npm run build",
+    "jase": "jase",
     "rimraf": "rimraf",
+    "tsc": "tsc",
     "tslint": "tslint",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "devDependencies": {
-    "rimraf": "^2.5.2",
-    "tslint": "^3.7.1",
-    "tslint-eslint-rules": "^1.3.0",
-    "typescript": "^1.8.9"
+    "typedoc": "typedoc",
+    "typings": "typings",
+    "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0",
+    "pregh-pages": "git push origin :gh-pages",
+    "gh-pages": "git subtree push --prefix docs origin gh-pages",
+    "prebuild": "npm run clean:lib",
+    "build": "npm run tsc",
+    "clean": "npm cache clean && npm run rimraf -- node_modules docs typings lib",
+    "clean:docs": "npm run rimraf -- docs",
+    "clean:lib": "npm run rimraf -- lib",
+    "predocs": "npm run clean:docs",
+    "docs": "npm run typedoc -- --options typedoc.json --exclude '**/*.spec.ts' ./src/",
+    "postdocs": "touch docs/.nojekyll",
+    "lint": "npm run tslint src/**/*.ts",
+    "postinstall": "npm run typings -- install",
+    "test": "npm run lint",
+    "preversion": "npm test",
+    "version": "npm run build && npm run docs && npm run changelog",
+    "postversion": "git add -A && git commit -m \"release: v$(cat package.json | jase -- version)\" && git tag \"v$(cat package.json | jase -- version)\" && git push && git push --tags && npm run gh-pages && npm publish"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/s-m-i-t-a/railroadjs.git"
+    "url": "git+https://github.com/s-m-i-t-a/railroadjs.git"
   },
   "keywords": [
     "railroad",
     "typescript",
     "functional"
   ],
-  "author": "Jindrich K. Smitka",
+  "author": "Jindrich K. Smitka <smitka.j@gmail.com> (http://www.smita.info/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/s-m-i-t-a/railroadjs/issues"
   },
   "homepage": "https://github.com/s-m-i-t-a/railroadjs#readme",
+  "devDependencies": {
+    "conventional-changelog-cli": "^1.2.0",
+    "jase": "^1.2.0",
+    "rimraf": "^2.5.2",
+    "tslint": "^3.15.1",
+    "typedoc": "https://github.com/zakhenry/typedoc/releases/download/v0.4.6/typedoc-0.4.6.tgz",
+    "typescript": "^2.0.2",
+    "typings": "^1.3.3"
+  },
+  "dependencies": {
+    "ramda": "^0.22.1",
+  },
   "engines": {
     "node": ">= 4.2.1",
     "npm": ">= 3"

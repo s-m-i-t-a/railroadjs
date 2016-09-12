@@ -1,9 +1,15 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
         "target": "es5",
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
         "noImplicitAny": true,
-        "sourceMap": false,
+        "baseUrl": "src/",
+        "sourceMap": true,
         "declaration": true,
         "outDir": "lib/"
     },
@@ -11,6 +17,7 @@
         "node_modules"
     ],
     "files": [
-        "./src/index.ts"
+        "typings/index.d.ts",
+        "src/index.ts"
     ]
 }
